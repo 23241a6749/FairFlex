@@ -1,0 +1,37 @@
+{
+  "study_id": "caltech_2019_commitment_fairness_adaptive_exploratory_september",
+  "evaluation_group": "causal_commitment_adaptive_exploratory_september",
+  "purpose": "Post-hoc exploratory diagnostic after the fixed April split-conformal guard lost seasonal coverage. This ACI-inspired, past-only guard is evaluated without changing any frozen fixed-guard result; it is not confirmatory final evidence.",
+  "time_step_minutes": 15,
+  "raw_files": {
+    "acn": {"train": "data/raw/acn_caltech_20190301_20190308.json", "calibration": "data/raw/acn_caltech_20190401_20190407.json", "test": "data/raw/acn_caltech_20190901_20190908.json"},
+    "nsrdb": "data/raw/nsrdb_caltech_2019_pilot_2019.csv"
+  },
+  "acn_data_protocol": {
+    "target_mode": "declared_commitment",
+    "controller_information": "At plug-in, use the earliest complete user-declared kWhRequested and requestedDeparture. The historical disconnectTime is a hidden realised environment event and is never a controller planning input.",
+    "unclaimed_session_policy": "Exclude unclaimed sessions from the primary user-satisfaction analysis; evaluate missing-commitment imputation only as a separately declared robustness study.",
+    "target_interpretation": "Service ratio is delivered energy divided by user-declared requested energy, not historical kWhDelivered."
+  },
+  "commitment_uncertainty": {
+    "method": "one_sided_split_conformal_early_departure_guard",
+    "miscoverage": 0.10,
+    "calibration_split": "calibration",
+    "deployment_rule": "At plug-in, form the guard from April calibration scores plus only realized unplug outcomes observed at or before that step; never use a current or future historical unplug.",
+    "selection_protocol": "A fixed ACI-inspired learning rate of 0.01 is documented before this exploratory replay. This is a response to observed fixed-guard drift, so it must be labelled exploratory and needs a genuinely unseen future replication before any final claim.",
+    "scope": "An operational past-only adaptation audit, not a finite-sample, per-driver, or conditional coverage guarantee.",
+    "candidate_modes": ["adaptive"],
+    "adaptive_conformal": {
+      "learning_rate": 0.01,
+      "min_miscoverage": 0.01,
+      "max_miscoverage": 0.50,
+      "reference": "Gibbs and Candès (NeurIPS 2021), Adaptive Conformal Inference Under Distribution Shift. Bounded alpha is an explicit implementation safety choice."
+    }
+  },
+  "charging_data": {"source": "ACN-Data", "site_id": "caltech", "station_assignment": "deterministic hash of session ID across synthetic stations", "note": "Real ACN sessions are mapped to synthetic feeder stations; this is an explicit experiment assumption."},
+  "solar_data": {"source": "NSRDB GOES-CONUS V4.0.0", "dataset": "nsrdb-GOES-conus-v4-0-0", "latitude": 34.1377, "longitude": -118.1253, "year": 2019, "interval_minutes": 15, "note": "Approximate Caltech/Pasadena solar-resource proxy; it is not measured rooftop PV output."},
+  "pv_proxy_sensitivity": {"dc_capacity_kw": 40.0, "ac_capacity_kw": 30.0, "note": "PVWatts GHI proxy for controlled sensitivity experiments; it is not measured Caltech PV production."},
+  "feeder_sensitivity": {"base_import_limit_kw": 10.0, "forecast_horizon_steps": 4, "note": "Deliberately severe shared feeder-import budget to create scarcity; it is not Caltech's measured feeder limit."},
+  "splits": {"train": ["2019-03-01T00:00:00Z", "2019-03-08T00:00:00Z"], "calibration": ["2019-04-01T00:00:00Z", "2019-04-08T00:00:00Z"], "test": ["2019-09-01T00:00:00Z", "2019-09-08T00:00:00Z"]},
+  "synthetic_stations": [{"station_id": "north", "bus": 6, "capacity_kw": 28.8}, {"station_id": "central", "bus": 18, "capacity_kw": 28.8}, {"station_id": "south", "bus": 30, "capacity_kw": 28.8}]
+}

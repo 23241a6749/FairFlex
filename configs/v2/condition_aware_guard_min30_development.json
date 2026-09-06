@@ -1,0 +1,11 @@
+{
+  "protocol_id": "fairflex_v2_condition_guard_min30_development",
+  "status": "development_only_not_a_frozen_test_result",
+  "purpose": "Predeclared V2 development candidate; compare only through the documented development selection protocol.",
+  "time_step_minutes": 15,
+  "replay_origin_requirement": "local_midnight_with_explicit_utc_offset",
+  "controller_information_boundary": {"visible_at_plugin": ["declared_requested_energy", "declared_departure", "plug_in_time", "station_and_EV_power_limits", "strictly_past_calibration_or_observed_outcomes", "present_metered_capacity"], "never_visible_to_controller_before_event": ["realized_physical_unplug_time", "future_arrivals", "future_realized_PV", "target_window_outcomes"]},
+  "guard": {"method": "condition_aware_one_sided_split_conformal_early_departure_guard_v2", "miscoverage": 0.1, "minimum_group_calibration_sessions": 30, "duration_groups": ["declared_duration_le_4h", "declared_duration_4_to_8h", "declared_duration_gt_8h"], "plug_in_time_groups": ["arrival_06_to_10h", "arrival_10_to_14h", "arrival_other"], "sparse_group_action": "use_global_split_conformal_buffer", "selection_rule": "Candidate only; no final claim from development output."},
+  "required_reporting": ["overall_and_group_coverage_with_calendar_day_confidence_intervals", "mean_median_and_p90_buffer", "global_fallback_rate", "P10_P5_worst_mean_Jain_completion_and_service_CDF", "executed_safety_raw_violations_and_repair_activations", "decision_runtime_solver_status_and_fallback_rate"],
+  "forbidden_claims": ["per_driver_coverage_guarantee", "universal_conditional_coverage_guarantee", "real_feeder_or_measured_PV_claim_without_new_data", "state_of_the_art_or_first_claim_without_final_systematic_review"]
+}

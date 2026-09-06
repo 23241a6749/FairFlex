@@ -1,0 +1,16 @@
+.venv/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest_tmp/
+.coverage
+htmlcov/
+data/raw/
+data/processed/
+data/app/
+artifacts/
+*.egg-info/
+web/node_modules/
+web/dist/
+.playwright-cli/

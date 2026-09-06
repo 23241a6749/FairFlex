@@ -1,0 +1,56 @@
+{
+  "study_id": "fairflex_v2_caltech_condition_aware_development_may",
+  "evaluation_group": "v2_development_selection_only",
+  "purpose": "V2 development-only guard selection. The local-midnight windows exist solely to make declared plug-in-time groups causal and interpretable. This configuration does not alter or replace any V1 study.",
+  "time_step_minutes": 15,
+  "raw_files": {
+    "acn": {
+      "train": "data/raw/acn_caltech_20190301_20190308.json",
+      "calibration": "data/raw/acn_caltech_20190401_20190407.json",
+      "test": "data/raw/acn_caltech_20190501_20190508.json"
+    },
+    "nsrdb": "data/raw/nsrdb_caltech_2019_pilot_2019.csv"
+  },
+  "acn_data_protocol": {
+    "target_mode": "declared_commitment",
+    "controller_information": "At plug-in use the earliest complete declared kWhRequested and requestedDeparture. Later disconnectTime is a hidden environment event.",
+    "unclaimed_session_policy": "Exclude sessions without a complete initial commitment from primary analysis.",
+    "target_interpretation": "Service ratio is delivered energy divided by user-declared requested energy."
+  },
+  "v2_protocol": "configs/v2/condition_aware_guard_protocol.json",
+  "charging_data": {
+    "source": "ACN-Data",
+    "site_id": "caltech",
+    "station_assignment": "deterministic hash of session ID across synthetic stations",
+    "note": "Real ACN sessions are mapped to synthetic feeder stations."
+  },
+  "solar_data": {
+    "source": "NSRDB GOES-CONUS V4.0.0",
+    "dataset": "nsrdb-GOES-conus-v4-0-0",
+    "latitude": 34.1377,
+    "longitude": -118.1253,
+    "year": 2019,
+    "interval_minutes": 15,
+    "note": "Solar-resource proxy, not measured rooftop PV."
+  },
+  "pv_proxy_sensitivity": {
+    "dc_capacity_kw": 40.0,
+    "ac_capacity_kw": 30.0,
+    "note": "PVWatts GHI proxy sensitivity."
+  },
+  "feeder_sensitivity": {
+    "base_import_limit_kw": 10.0,
+    "forecast_horizon_steps": 4,
+    "note": "Synthetic shared-import scarcity, not Caltech's measured feeder limit."
+  },
+  "splits": {
+    "train": ["2019-03-01T00:00:00-08:00", "2019-03-08T00:00:00-08:00"],
+    "calibration": ["2019-04-01T00:00:00-07:00", "2019-04-08T00:00:00-07:00"],
+    "test": ["2019-05-01T00:00:00-07:00", "2019-05-08T00:00:00-07:00"]
+  },
+  "synthetic_stations": [
+    {"station_id": "north", "bus": 6, "capacity_kw": 28.8},
+    {"station_id": "central", "bus": 18, "capacity_kw": 28.8},
+    {"station_id": "south", "bus": 30, "capacity_kw": 28.8}
+  ]
+}

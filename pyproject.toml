@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fairflex"
+version = "0.1.0"
+description = "Fair, forecast-aware, grid-safe EV charging research simulator"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "numpy>=1.26,<2.4",
+    "pandas>=2.2",
+    "matplotlib>=3.9",
+    "scipy>=1.12",
+    "cvxpy>=1.5",
+    "highspy>=1.7",
+    "osqp>=1.0",
+    "pandapower>=3.5",
+    "scikit-learn>=1.5",
+    "xgboost>=2.1",
+    "pvlib>=0.13",
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+app = [
+    "fastapi>=0.115,<0.117",
+    "uvicorn[standard]>=0.30,<0.32",
+    "httpx>=0.27,<0.29",
+]
+# MAPPO is optional because it adds a large PyTorch dependency. Install it with
+# the CPU-only command documented in README unless a CUDA environment is needed.
+marl = ["torch>=2.4,<2.8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fairflex = ["app/*.json"]

@@ -1,0 +1,472 @@
+{
+  "artifact_ledger": [
+    {
+      "path": "artifacts/paper_comparison_jpl_november/evidence_package/primary_paired_comparisons.csv",
+      "purpose": "V1 baseline paired calendar-day effects",
+      "sha256": "e8af452b0285f8cef474895c8e85f909429e98dbbe836d0cb78186b891d09ff4"
+    },
+    {
+      "path": "artifacts/paper_comparison_jpl_november/evidence_package/primary_policy_table.csv",
+      "purpose": "V1 baseline descriptive policy table",
+      "sha256": "3ce39342a262ada0c7303d2f9e48884b3997ef6d3b989a98c4540913dc45a8c0"
+    },
+    {
+      "path": "artifacts/paper_comparison_jpl_november/evidence_package/guard_reliability_table.csv",
+      "purpose": "JPL November guard coverage and buffer trade-off",
+      "sha256": "39b0ff902500064f2be9b4124f43ae68736ddc8de11745ef811748a090970b85"
+    },
+    {
+      "path": "artifacts/v3/holdout_october_frozen/test_fairflex_uc_metrics.csv",
+      "purpose": "Caltech October frozen V1/V3 descriptive cohort metrics",
+      "sha256": "8473b7296e57ba4c2b97b882f415740a242b9c088fc431b4b41f0e8658a6244e"
+    },
+    {
+      "path": "artifacts/v3/holdout_october_statistical_audit/paired_calendar_day_statistical_audit.csv",
+      "purpose": "Caltech October paired-day inference",
+      "sha256": "2570d3b59d320d26f65a6267990baf80249debd81663e1de3d872c18e0baa63e"
+    },
+    {
+      "path": "artifacts/v3/caltech_november_temporal_replication_continuous/test_fairflex_uc_metrics.csv",
+      "purpose": "Caltech November continuous V1/V3 metrics",
+      "sha256": "7551cade3cb679ee00f272f22ff2f831b71a00d4ff310b4308f69daf854443ed"
+    },
+    {
+      "path": "artifacts/v3/caltech_november_continuous_statistical_audit/paired_calendar_day_statistical_audit.csv",
+      "purpose": "Caltech November paired-day inference",
+      "sha256": "1589c650bffa671b1ec9014b76f6a8159bb8ae4f4441e3e29200efd25f3bc3c4"
+    },
+    {
+      "path": "artifacts/v3/jpl_external_october_frozen/test_fairflex_uc_metrics.csv",
+      "purpose": "JPL October external V1/V3 replication metrics",
+      "sha256": "282f1a91a976c5e7955133ebe9a0d5d4571f8706f1a7b5a35ef097a08cc54ec8"
+    },
+    {
+      "path": "artifacts/v3/holdout_october_cqr_prediction_audit_v3/test_cqr_prediction_summary.json",
+      "purpose": "Caltech October CQR coverage audit",
+      "sha256": "1ed601a33a8b8e54f70aca8560938c27ed847c60dc9b879c56e26b24a8810b05"
+    },
+    {
+      "path": "artifacts/v3/caltech_october_frozen_sensitivity/scenario_hybrid_vs_v1.csv",
+      "purpose": "Frozen one-factor V3 sensitivity results",
+      "sha256": "710e41a59219197605f8cf1f6e0eb476dba65f671871d215476a0920c8863f7a"
+    },
+    {
+      "path": "artifacts/v3/safe_marl_final_statistical_audit_endpoint_amendment/safe_marl_seed_ensemble_statistical_audit.csv",
+      "purpose": "Final multi-seed safe-MAPPO/IPPO inference",
+      "sha256": "7b3e4db2a735f56fe162251aec5c00f0000d114f19c916b01ebdb91f09817b00"
+    }
+  ],
+  "calendar_day_inference": [
+    {
+      "ci_high": 0.04335658006571399,
+      "ci_low": -0.005528633739096145,
+      "cohort": "Caltech October frozen holdout",
+      "eligible_days": 5,
+      "one_sided_p": 0.1875,
+      "reading": "Inconclusive: the paired-day interval crosses zero.",
+      "v3_minus_v1_p10": 0.016449624715064382
+    },
+    {
+      "ci_high": 0.004640658885880191,
+      "ci_low": -0.017534198050704906,
+      "cohort": "Caltech November continuous",
+      "eligible_days": 22,
+      "one_sided_p": 0.8612113878861212,
+      "reading": "Inconclusive: the paired-day interval crosses zero.",
+      "v3_minus_v1_p10": -0.006775454881355562
+    }
+  ],
+  "cqr_calibration": {
+    "ci_high": 0.9401709401709402,
+    "ci_low": 0.8877551020408163,
+    "coverage": 0.9155844155844156,
+    "covered_sessions": 141,
+    "interpretation": "Coverage is uncertainty calibration, not classifier accuracy. The CQR model is frozen; the observed interval is descriptive and respects day clustering.",
+    "sessions": 154,
+    "site": "Caltech October frozen holdout",
+    "target": 0.9
+  },
+  "data_lineage": [
+    {
+      "data": "Bundled deterministic FairFlex teaching fixtures",
+      "layer": "Interactive demonstrator",
+      "scope": "2-EV deadline-stress or 5-EV multi-station scenario; not a population-performance estimate.",
+      "used_for": "Live V1/V3 mechanics, allocation explanation, and AC-repair demonstration"
+    },
+    {
+      "data": "ACN-Data session records from Caltech and JPL",
+      "layer": "Historical charging sessions",
+      "scope": "Connection/disconnect times, declared departure and energy request, station context, delivered energy, and observed charge/current traces where needed.",
+      "used_for": "Frozen chronological trace replay, training/calibration labels, and held-out evaluation"
+    },
+    {
+      "data": "Regional NSRDB/PVWatts proxy plus controlled shared-import and IEEE-33 AC sensitivity model",
+      "layer": "Solar and feeder assumptions",
+      "scope": "Not measured Caltech or JPL rooftop PV or feeder telemetry; every screen must retain this limitation.",
+      "used_for": "Forecast reserve and electrical-feasibility sensitivity evaluation"
+    }
+  ],
+  "findings": [
+    {
+      "text": "On frozen JPL November replay (29 non-empty days, 1,320 sessions), robust-PV FairFlex improves P10 over equal share by +0.0204, 95% CI [+0.0061, +0.0339], while Jain equality is lower. This is a lower-tail fairness trade-off, not universal dominance.",
+      "title": "V1 baseline result"
+    },
+    {
+      "text": "V3\u2019s all-session P10 is higher than guarded V1 in the three descriptive frozen cohorts shown, but the paired calendar-day P10 intervals for Caltech October and November cross zero. Keep V1 as the default recommendation.",
+      "title": "V3 result"
+    },
+    {
+      "text": "On JPL November, the selected multi-rate envelope has 0.892 coverage (95% CI [0.875, 0.907]) against a 0.90 target; the fixed global guard is 0.855 (95% CI [0.831, 0.875]).",
+      "title": "Reliability result"
+    },
+    {
+      "text": "V3 improves the prespecified all-session P10 in each listed October sensitivity condition, with zero unsafe replay steps, but gives up 3.45\u201311.30 kWh of delivered energy versus guarded V1.",
+      "title": "Sensitivity result"
+    },
+    {
+      "text": "Five-seed MAPPO/IPPO benchmark comparisons do not establish a P10 advantage over V3; both 95% intervals cross zero. They remain benchmarks, not deployment recommendations.",
+      "title": "MARL result"
+    }
+  ],
+  "guard_reliability": [
+    {
+      "ci_high": 0.8752262499529614,
+      "ci_low": 0.8306652499252802,
+      "condition": "global guard",
+      "coverage": 0.8545454545454545,
+      "days": 29,
+      "decisions": 1320,
+      "mean_buffer_minutes": 120.0,
+      "target": 0.9
+    },
+    {
+      "ci_high": 0.9067271009675902,
+      "ci_low": 0.8745925615242993,
+      "condition": "multi rate envelope guard",
+      "coverage": 0.8924242424242425,
+      "days": 29,
+      "decisions": 1320,
+      "mean_buffer_minutes": 142.125,
+      "target": 0.9
+    }
+  ],
+  "limitations": [
+    "Historical ACN sessions are real, but feeder placement, 10 kW shared import, and PV generation are controlled sensitivity assumptions rather than measured Caltech/JPL feeder or rooftop-PV data.",
+    "The interactive Command Center is a deterministic teaching simulation and does not fetch data, train a model, or control a charger.",
+    "No result establishes field deployment performance, universal dominance, or a state-of-the-art claim."
+  ],
+  "marl": [
+    {
+      "ci_high": 0.0167553618864139,
+      "ci_low": -0.15481303182261433,
+      "daily_p10_difference_vs_v3": -0.059491382079974425,
+      "eligible_days": 13,
+      "one_sided_p": 0.837890625,
+      "policy": "IPPO",
+      "seeds": 5
+    },
+    {
+      "ci_high": 0.020890930178215708,
+      "ci_low": -0.13666029357069648,
+      "daily_p10_difference_vs_v3": -0.04808924752933431,
+      "eligible_days": 13,
+      "one_sided_p": 0.8079833984375,
+      "policy": "MAPPO",
+      "seeds": 5
+    }
+  ],
+  "metric_guide": [
+    {
+      "definition": "Delivered energy divided by requested energy for one EV; 1.0 means the requested energy was delivered.",
+      "direction": "Higher is better.",
+      "metric": "Service ratio"
+    },
+    {
+      "definition": "The lower-tail service ratio at the 10th percentile across a sufficiently large cohort of EV sessions.",
+      "direction": "Higher is better. In a 2/5-EV teaching fixture it is illustrative only, not inferential.",
+      "metric": "P10 service ratio"
+    },
+    {
+      "definition": "A 0\u20131 equality index over service ratios; 1.0 means equal service, not necessarily high service.",
+      "direction": "Higher indicates more equal service.",
+      "metric": "Jain service index"
+    },
+    {
+      "definition": "Average service deficit within the worst tenth of sessions; the lower-tail MPC uses a convex surrogate for this objective.",
+      "direction": "Lower is better.",
+      "metric": "Expected shortfall (worst 10%)"
+    },
+    {
+      "definition": "Bootstrap interval for a matched policy difference using complete calendar days as resampling blocks.",
+      "direction": "If it crosses zero, the small temporal sample does not establish a reliable directional difference.",
+      "metric": "95% paired day-block interval"
+    },
+    {
+      "definition": "Fraction of held-out early-unplug events protected by the frozen predictive deadline envelope.",
+      "direction": "Compare with its nominal target; it is calibration, not accuracy.",
+      "metric": "Coverage"
+    }
+  ],
+  "policy_decision": {
+    "conclusion": "V3 has promising all-session lower-tail estimates, but paired calendar-day tests do not establish a reliable V3 improvement over the frozen V1 comparator.",
+    "default": "Live V1 demo: Centralized Fair MPC + AC repair",
+    "research_v1": "Frozen V1 comparator: Fair MPC + multi-rate deadline guard",
+    "research_v3": "Frozen V3: CQR + conservative hybrid deadline envelope + lower-tail MPC",
+    "shadow": "Live V3 demo: lower-tail MPC + AC repair (teaching-only shadow)"
+  },
+  "pooled_p10": [
+    {
+      "cohort": "Caltech October frozen holdout",
+      "v1": 0.20232547121784164,
+      "v3": 0.21607037795528738
+    },
+    {
+      "cohort": "Caltech November continuous",
+      "v1": 0.17016882463767619,
+      "v3": 0.17131173857410495
+    },
+    {
+      "cohort": "JPL October external",
+      "v1": 0.07835237150761923,
+      "v3": 0.0859414105346508
+    }
+  ],
+  "primary_benchmark": {
+    "assumptions": "Synthetic 10 kW shared import, regional NSRDB/PVWatts proxy, and the same AC execution-safety check for every policy.",
+    "dates": "2019-11-01 to 2019-11-29 (29 non-empty days)",
+    "inference_unit": "Matched calendar day; 95% paired day-block bootstrap intervals (5,000 resamples).",
+    "label": "Frozen JPL November V1 baseline comparison",
+    "p10_effects": [
+      {
+        "baseline": "Uncontrolled (capped)",
+        "ci_high": 0.0338673382311119,
+        "ci_low": 0.0060347647678574,
+        "days": 29,
+        "effect": 0.0203340976069885
+      },
+      {
+        "baseline": "FCFS",
+        "ci_high": 0.0600184691474159,
+        "ci_low": 0.0271696936305022,
+        "days": 29,
+        "effect": 0.0448358831376564
+      },
+      {
+        "baseline": "EDF",
+        "ci_high": 0.0577004376342563,
+        "ci_low": 0.02535440328792,
+        "days": 29,
+        "effect": 0.0426686640615325
+      },
+      {
+        "baseline": "Equal share",
+        "ci_high": 0.033932782969731,
+        "ci_low": 0.0061022058279585,
+        "days": 29,
+        "effect": 0.020370273249137
+      },
+      {
+        "baseline": "LLF",
+        "ci_high": 0.0560952851641021,
+        "ci_low": 0.0232147827756879,
+        "days": 29,
+        "effect": 0.0407254436145794
+      },
+      {
+        "baseline": "FairFlex without PV robustness",
+        "ci_high": 0.0418742791343443,
+        "ci_low": 0.0150289528238466,
+        "days": 29,
+        "effect": 0.0270547724012961
+      }
+    ],
+    "policy_table": [
+      {
+        "delivered_energy_kwh": 5797.890878345954,
+        "jain": 0.6185186471762296,
+        "mean": 0.40637279453143293,
+        "p10": 0.19155737203457188,
+        "policy": "Uncontrolled (capped)",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5803.775767151926,
+        "jain": 0.5303566191773075,
+        "mean": 0.409293368185468,
+        "p10": 0.16705558650390404,
+        "policy": "FCFS",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5805.110948848842,
+        "jain": 0.5524293432065076,
+        "mean": 0.41944784131248725,
+        "p10": 0.16922280558002792,
+        "policy": "EDF",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5797.882510396472,
+        "jain": 0.6175666502912733,
+        "mean": 0.40651033922770535,
+        "p10": 0.19152119639242335,
+        "policy": "Equal share",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5797.882510396472,
+        "jain": 0.6175666502912733,
+        "mean": 0.40651033922770535,
+        "p10": 0.19152119639242335,
+        "policy": "Round Robin*",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5807.188644657076,
+        "jain": 0.5443925964147875,
+        "mean": 0.3697931095360048,
+        "p10": 0.171166026026981,
+        "policy": "LLF",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5077.823336214841,
+        "jain": 0.5305117503563865,
+        "mean": 0.3465366948922037,
+        "p10": 0.18483669724026436,
+        "policy": "FairFlex, no PV robustness",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      },
+      {
+        "delivered_energy_kwh": 5801.673978432112,
+        "jain": 0.5722767480046392,
+        "mean": 0.37821462561991226,
+        "p10": 0.21189146964156044,
+        "policy": "FairFlex, robust PV",
+        "sessions": 1320,
+        "unsafe_steps": 0
+      }
+    ],
+    "sessions": 1320,
+    "site": "JPL"
+  },
+  "schema_version": 2,
+  "scope": "Frozen FairFlex historical ACN evaluation summaries. The dashboard reads this immutable-at-build evidence ledger; it does not rerun, select, or retune research policies.",
+  "sensitivity": [
+    {
+      "condition": "10 kW base import",
+      "early_unplug_p10_difference": 0.01618945085459869,
+      "energy_difference_kwh": -5.082526581169532,
+      "p10_difference": 0.013744906737445689,
+      "shortfall_difference": -0.012690587373473283,
+      "v1_unsafe_steps": 0,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "condition": "12 kW import",
+      "early_unplug_p10_difference": -0.007284846882244997,
+      "energy_difference_kwh": -3.446183605549095,
+      "p10_difference": 0.00431462116297221,
+      "shortfall_difference": -0.009935100703392985,
+      "v1_unsafe_steps": 0,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "condition": "45 kW AC PV proxy",
+      "early_unplug_p10_difference": 0.022988593200205992,
+      "energy_difference_kwh": -8.248236123368997,
+      "p10_difference": 0.014419809499986808,
+      "shortfall_difference": -0.029875452196574726,
+      "v1_unsafe_steps": 0,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "condition": "8 kW import",
+      "early_unplug_p10_difference": 0.029241791718533097,
+      "energy_difference_kwh": -11.29717028952723,
+      "p10_difference": 0.007381473523598497,
+      "shortfall_difference": -0.024793777077303014,
+      "v1_unsafe_steps": 0,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "condition": "15 kW AC PV proxy",
+      "early_unplug_p10_difference": 0.018441673429424807,
+      "energy_difference_kwh": -4.893467077706873,
+      "p10_difference": 0.014185966552430401,
+      "shortfall_difference": -0.001886249917005589,
+      "v1_unsafe_steps": 0,
+      "v3_unsafe_steps": 0
+    }
+  ],
+  "source_derived_payload_sha256": "3d8de92cd8d5068c660a3e0e9d14a29750236dc04758ce34c262599e18692c73",
+  "sources": [
+    {
+      "label": "ACN-Data documentation",
+      "url": "https://ev.caltech.edu/dataset.html"
+    },
+    {
+      "label": "ACN-Sim paper",
+      "url": "https://ev.caltech.edu/assets/pub/ACN_Sim_Open_Source_Simulator.pdf"
+    },
+    {
+      "label": "CQR paper",
+      "url": "https://papers.neurips.cc/paper_files/paper/2019/hash/5103c3584b063c431bd1268e9b5e76fb-Abstract.html"
+    },
+    {
+      "label": "MAPPO paper",
+      "url": "https://arxiv.org/abs/2103.01955"
+    }
+  ],
+  "v3_cohorts": [
+    {
+      "cohort": "Caltech October frozen holdout",
+      "dates": "2019-10-01 to 2019-10-08",
+      "notes": "154 sessions; V3 selection and hyperparameters were frozen before this holdout.",
+      "role": "Frozen temporal holdout",
+      "sessions": 154,
+      "site": "Caltech",
+      "v1": 0.20232547121784164,
+      "v1_energy_kwh": 1474.5882396181632,
+      "v1_unsafe_steps": 0,
+      "v3": 0.21607037795528738,
+      "v3_energy_kwh": 1469.5057130369937,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "cohort": "Caltech November continuous",
+      "dates": "2019-11-01 to 2019-11-30",
+      "notes": "615 sessions; continuous replay with calendar-day inference.",
+      "role": "Later temporal replication",
+      "sessions": 615,
+      "site": "Caltech",
+      "v1": 0.17016882463767619,
+      "v1_energy_kwh": 5049.127342192669,
+      "v1_unsafe_steps": 0,
+      "v3": 0.17131173857410495,
+      "v3_energy_kwh": 5027.890387402008,
+      "v3_unsafe_steps": 0
+    },
+    {
+      "cohort": "JPL October external",
+      "dates": "2019-10-01 to 2019-10-08",
+      "notes": "379 sessions; frozen design with site-calibrated historical guard/CQR, not zero-shot transfer.",
+      "role": "External site replication",
+      "sessions": 379,
+      "site": "JPL",
+      "v1": 0.07835237150761923,
+      "v1_energy_kwh": 1664.6636469989764,
+      "v1_unsafe_steps": 0,
+      "v3": 0.0859414105346508,
+      "v3_energy_kwh": 1657.0748243190292,
+      "v3_unsafe_steps": 0
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "protocol_id": "caltech_2019_fairflex_uc_frozen_one_factor_sensitivity",
+  "base_study_config": "configs/v3/caltech_2019_fairflex_uc_holdout_october.json",
+  "selection_status": "post-selection robustness analysis; no scenario result may retune or replace the frozen policy",
+  "one_factor_at_a_time": true,
+  "policies": [
+    "equal_share_shared_cap",
+    "v1_fair_mpc_multirate_guard",
+    "fairflex_uc_hybrid_lower_tail"
+  ],
+  "scenarios": [
+    {"name": "lower_import_8kw", "base_import_limit_kw": 8.0},
+    {"name": "baseline_import_10kw", "base_import_limit_kw": 10.0},
+    {"name": "higher_import_12kw", "base_import_limit_kw": 12.0},
+    {"name": "lower_pv_15kw", "pv_dc_capacity_kw": 20.0, "pv_ac_capacity_kw": 15.0},
+    {"name": "higher_pv_45kw", "pv_dc_capacity_kw": 60.0, "pv_ac_capacity_kw": 45.0}
+  ]
+}

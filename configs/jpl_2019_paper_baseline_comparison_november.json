@@ -1,0 +1,91 @@
+{
+  "study_id": "jpl_2019_paper_baseline_comparison_november",
+  "evaluation_group": "paper_primary_jpl_november_unseen",
+  "purpose": "Frozen primary paper-comparison cohort. The JPL November 1--30, 2019 ACN file must not be acquired, inspected, or used until this configuration, the standard baseline implementations, and the comparison documentation are complete. This is a historical trace-replay experiment, not a real-time deployment or measured JPL feeder study.",
+  "time_step_minutes": 15,
+  "raw_files": {
+    "acn": {
+      "train": "data/raw/acn_jpl_20190301_20190308.json",
+      "calibration": "data/raw/acn_jpl_20190401_20190408.json",
+      "test": "data/raw/acn_jpl_20191101_20191201.json"
+    },
+    "nsrdb": "data/raw/nsrdb_caltech_2019_pilot_2019.csv"
+  },
+  "acn_data_protocol": {
+    "target_mode": "declared_commitment",
+    "controller_information": "At plug-in use the earliest complete declared kWhRequested and requestedDeparture. The later disconnectTime is a hidden environment event and must never be a controller input.",
+    "unclaimed_session_policy": "Exclude sessions without a complete initial commitment from the primary analysis.",
+    "target_interpretation": "Service ratio is delivered energy divided by user-declared requested energy, not historical delivered energy."
+  },
+  "commitment_uncertainty": {
+    "method": "one_sided_split_conformal_early_departure_guard",
+    "miscoverage": 0.10,
+    "calibration_split": "calibration",
+    "deployment_rule": "At each plug-in each guard uses only JPL April calibration scores and JPL physical unplug outcomes already observed at or before that control step.",
+    "selection_protocol": "Use only the multi_rate_envelope selected and recorded on JPL May, then replicated unchanged on JPL June and audited on JPL December. Apply it to every primary-policy replay so that controller-information differences cannot explain a result. The historical JPL November test file is not used for any selection, rate tuning, metric choice, or scenario change.",
+    "selection_evidence": "artifacts/commitment_fairness/agaci_development_jpl_may/selection.json; artifacts/commitment_fairness/agaci_replication_jpl_june/replication.json; artifacts/commitment_fairness/agaci_temporal_validation_jpl_december/multi_rate_envelope/test_pilot_summary.json",
+    "scope": "Primary-policy comparison evidence only. Empirical coverage is operational and does not imply a finite-sample, conditional, per-driver, universal, or real-time deployment guarantee.",
+    "candidate_modes": ["multi_rate_envelope"],
+    "multi_rate_envelope": {
+      "learning_rates": [0.001, 0.005, 0.01, 0.02],
+      "min_miscoverage": 0.01,
+      "max_miscoverage": 0.50
+    }
+  },
+  "comparison_protocol": {
+    "unit_of_inference": "matched chronological calendar day; never individual EV session",
+    "primary_treatment": "fair_mpc_ac_robust_pv",
+    "frozen_policy_set": [
+      "uncontrolled_shared_cap",
+      "fcfs_shared_cap",
+      "edf_shared_cap",
+      "equal_share_shared_cap",
+      "round_robin_shared_cap",
+      "least_laxity_first_shared_cap",
+      "fair_mpc_ac_no_pv",
+      "fair_mpc_ac_robust_pv"
+    ],
+    "shared_information_and_safety": "Every primary policy receives the same declared commitment, the same causal multi-rate deadline guard, the same present-time PV-capacity source, the same station limits, and the same executed-action AC safety validation. Report raw unsafe proposals separately whenever a policy produces one.",
+    "round_robin_note": "Because FairFlex models continuous power rather than discrete EVSE pilot-current increments, ideal Round Robin equals water-filled equal sharing. It remains visible for standards alignment but is not an independent primary-evidence row.",
+    "primary_metrics": ["p10_service_ratio", "jain_service_index", "energy_service_ratio", "completion_rate"],
+    "required_safety_metrics": ["unsafe_steps", "min_voltage_pu", "max_line_loading_percent", "unavoidable_individual_shortfall_kwh"],
+    "uncertainty_metrics": ["empirical_coverage", "mean_buffer_minutes", "median_buffer_minutes", "p90_buffer_minutes"],
+    "runtime_interpretation": "Report median and p95 per-day runtime descriptively; do not present faster runtime as a quality improvement without hardware-controlled experiments.",
+    "forbidden_actions_after_acquisition": "Do not alter a policy, guard, learning rate, metric, target definition, station mapping, feeder cap, or test window after the November file is acquired."
+  },
+  "charging_data": {
+    "source": "ACN-Data",
+    "site_id": "jpl",
+    "station_assignment": "deterministic hash of session ID across synthetic stations",
+    "note": "Real JPL sessions are mapped to synthetic feeder stations; this is an explicit experiment assumption."
+  },
+  "solar_data": {
+    "source": "NSRDB GOES-CONUS V4.0.0",
+    "dataset": "nsrdb-GOES-conus-v4-0-0",
+    "latitude": 34.1377,
+    "longitude": -118.1253,
+    "year": 2019,
+    "interval_minutes": 15,
+    "note": "Fixed regional GHI resource proxy; it is not measured JPL rooftop PV output."
+  },
+  "pv_proxy_sensitivity": {
+    "dc_capacity_kw": 40.0,
+    "ac_capacity_kw": 30.0,
+    "note": "PVWatts GHI proxy for a controlled sensitivity experiment; it is not measured JPL PV production."
+  },
+  "feeder_sensitivity": {
+    "base_import_limit_kw": 10.0,
+    "forecast_horizon_steps": 4,
+    "note": "Deliberately severe synthetic shared feeder-import budget; it is not a measured JPL feeder limit."
+  },
+  "splits": {
+    "train": ["2019-03-01T00:00:00Z", "2019-03-08T00:00:00Z"],
+    "calibration": ["2019-04-01T00:00:00Z", "2019-04-08T00:00:00Z"],
+    "test": ["2019-11-01T00:00:00Z", "2019-12-01T00:00:00Z"]
+  },
+  "synthetic_stations": [
+    {"station_id": "north", "bus": 6, "capacity_kw": 28.8},
+    {"station_id": "central", "bus": 18, "capacity_kw": 28.8},
+    {"station_id": "south", "bus": 30, "capacity_kw": 28.8}
+  ]
+}

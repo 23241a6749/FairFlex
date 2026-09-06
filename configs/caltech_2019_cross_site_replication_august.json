@@ -1,0 +1,84 @@
+{
+  "study_id": "caltech_2019_cross_site_replication_august",
+  "evaluation_group": "paper_cross_site_caltech_august_unseen",
+  "purpose": "Frozen external-site replication of the JPL FairFlex policy matrix at the public Caltech ACN site. The Caltech August 1--31, 2019 file must not be acquired, inspected, or used until this configuration, its invariant test, and the protocol documentation are complete. The controller, policy set, guard architecture/rates, PV proxy capacity, feeder sensitivity, metrics, and inference are fixed; only site-local historical March fit and April calibration data are used as a deployment prerequisite.",
+  "time_step_minutes": 15,
+  "raw_files": {
+    "acn": {
+      "train": "data/raw/acn_caltech_20190301_20190308.json",
+      "calibration": "data/raw/acn_caltech_20190401_20190407.json",
+      "test": "data/raw/acn_caltech_20190801_20190901.json"
+    },
+    "nsrdb": "data/raw/nsrdb_caltech_2019_pilot_2019.csv"
+  },
+  "acn_data_protocol": {
+    "target_mode": "declared_commitment",
+    "controller_information": "At plug-in use the earliest complete declared kWhRequested and requestedDeparture. The later disconnectTime is a hidden environment event and must never be a controller input.",
+    "unclaimed_session_policy": "Exclude sessions without a complete initial commitment from the primary analysis.",
+    "target_interpretation": "Service ratio is delivered energy divided by user-declared requested energy, not historical delivered energy."
+  },
+  "commitment_uncertainty": {
+    "method": "one_sided_split_conformal_early_departure_guard",
+    "miscoverage": 0.10,
+    "calibration_split": "calibration",
+    "deployment_rule": "At each plug-in each guard uses only Caltech April calibration scores and Caltech physical unplug outcomes already observed at or before that control step.",
+    "selection_protocol": "Use the same multi_rate_envelope architecture and learning rates selected before the JPL primary test. Caltech April only initializes the calibration-score bank; it cannot select a mode, rate, policy, metric, or scenario. Caltech August is used only for external-site evaluation.",
+    "scope": "External-site replication evidence only. Empirical coverage is operational and does not imply a finite-sample, conditional, per-driver, universal, or real-time deployment guarantee.",
+    "candidate_modes": ["multi_rate_envelope"],
+    "multi_rate_envelope": {
+      "learning_rates": [0.001, 0.005, 0.01, 0.02],
+      "min_miscoverage": 0.01,
+      "max_miscoverage": 0.50
+    }
+  },
+  "comparison_protocol": {
+    "unit_of_inference": "matched chronological calendar day; never individual EV session",
+    "primary_treatment": "fair_mpc_ac_robust_pv",
+    "frozen_policy_set": [
+      "uncontrolled_shared_cap", "fcfs_shared_cap", "edf_shared_cap", "equal_share_shared_cap",
+      "round_robin_shared_cap", "least_laxity_first_shared_cap", "fair_mpc_ac_no_pv", "fair_mpc_ac_robust_pv"
+    ],
+    "shared_information_and_safety": "Every policy receives the same declared commitment, causal multi-rate deadline guard, present-time PV-capacity source, station limits, synthetic feeder mapping, and AC execution validation.",
+    "round_robin_note": "Because FairFlex models continuous power rather than discrete EVSE pilot-current increments, ideal Round Robin equals water-filled equal sharing. It remains visible for standards alignment but is not independent primary evidence.",
+    "primary_metrics": ["p10_service_ratio", "jain_service_index", "energy_service_ratio", "completion_rate"],
+    "required_safety_metrics": ["unsafe_steps", "min_voltage_pu", "max_line_loading_percent", "unavoidable_individual_shortfall_kwh"],
+    "uncertainty_metrics": ["empirical_coverage", "mean_buffer_minutes", "median_buffer_minutes", "p90_buffer_minutes"],
+    "runtime_interpretation": "Report median and p95 per-day runtime descriptively; do not present faster runtime as a quality improvement without hardware-controlled experiments.",
+    "forbidden_actions_after_acquisition": "Do not alter a policy, guard architecture/rates, metric, target definition, station mapping, feeder cap, or test window after the Caltech August file is acquired."
+  },
+  "charging_data": {
+    "source": "ACN-Data",
+    "site_id": "caltech",
+    "station_assignment": "deterministic hash of session ID across synthetic stations",
+    "note": "Real Caltech sessions are mapped to synthetic feeder stations; this is an explicit experiment assumption."
+  },
+  "solar_data": {
+    "source": "NSRDB GOES-CONUS V4.0.0",
+    "dataset": "nsrdb-GOES-conus-v4-0-0",
+    "latitude": 34.1377,
+    "longitude": -118.1253,
+    "year": 2019,
+    "interval_minutes": 15,
+    "note": "Fixed regional GHI resource proxy; it is not measured Caltech rooftop PV output."
+  },
+  "pv_proxy_sensitivity": {
+    "dc_capacity_kw": 40.0,
+    "ac_capacity_kw": 30.0,
+    "note": "PVWatts GHI proxy for a controlled sensitivity experiment; it is not measured Caltech PV production."
+  },
+  "feeder_sensitivity": {
+    "base_import_limit_kw": 10.0,
+    "forecast_horizon_steps": 4,
+    "note": "Deliberately severe synthetic shared feeder-import budget; it is not a measured Caltech feeder limit."
+  },
+  "splits": {
+    "train": ["2019-03-01T00:00:00Z", "2019-03-08T00:00:00Z"],
+    "calibration": ["2019-04-01T00:00:00Z", "2019-04-07T00:00:00Z"],
+    "test": ["2019-08-01T00:00:00Z", "2019-09-01T00:00:00Z"]
+  },
+  "synthetic_stations": [
+    {"station_id": "north", "bus": 6, "capacity_kw": 28.8},
+    {"station_id": "central", "bus": 18, "capacity_kw": 28.8},
+    {"station_id": "south", "bus": 30, "capacity_kw": 28.8}
+  ]
+}
